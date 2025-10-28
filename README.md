@@ -108,13 +108,14 @@ Every $k_{exchange} = 6$ iterations:
 1. **Rank all pack-local bests:**
 
 $$
-   B = \{(\mathbf{x}_1^*, f_1^*), (\mathbf{x}_2^*, f_2^*), \ldots, (\mathbf{x}_k^*, f_k^*)\}
+   B = \{ (\mathbf{x}_{1}^{*}, f_{1}^{*}), (\mathbf{x}_{2}^{*}, f_{2}^{*}), \ldots, (\mathbf{x}_{k}^{*}, f_{k}^{*}) \}.
+
 $$
 
 2. **Select top-3 elites:**
 
 $$
-   E = \{\mathbf{x}^*_{(1)}, \mathbf{x}^*_{(2)}, \mathbf{x}^*_{(3)}\}
+   E = \{\mathbf{x}_{(1)}^{*},\; \mathbf{x}_{(2)}^{*},\; \mathbf{x}_{(3)}^{*}\}.
 $$
 
 3. **Inject perturbed elites into each pack:**
