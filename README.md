@@ -107,15 +107,21 @@ Every $k_{exchange} = 6$ iterations:
 
 1. **Rank all pack-local bests:**
 
-   $$B = \{(\mathbf{x}_1^*, f_1^*), (\mathbf{x}_2^*, f_2^*), \ldots, (\mathbf{x}_k^*, f_k^*)\}$$
+$$
+   B = \{(\mathbf{x}_1^*, f_1^*), (\mathbf{x}_2^*, f_2^*), \ldots, (\mathbf{x}_k^*, f_k^*)\}
+$$
 
 2. **Select top-3 elites:**
 
-   $$E = \{\mathbf{x}^*_{(1)}, \mathbf{x}^*_{(2)}, \mathbf{x}^*_{(3)}\}$$
+$$
+   E = \{\mathbf{x}^*_{(1)}, \mathbf{x}^*_{(2)}, \mathbf{x}^*_{(3)}\}
+$$
 
 3. **Inject perturbed elites into each pack:**
 
-   $$\mathbf{x}_{worst} \leftarrow \mathbf{x}_{elite} + 0.01 \cdot \boldsymbol{\epsilon}$$
+$$
+   \mathbf{x}_{worst} \leftarrow \mathbf{x}_{elite} + 0.01 \cdot \boldsymbol{\epsilon}
+$$
 
 **Practical Relevance:** This models **information sharing between packs** through vocalizations or visual cues. Weak-performing dogs are replaced with perturbed versions of successful strategies from other packs.
 
@@ -180,14 +186,14 @@ This is a well-designed hybrid algorithm combining:
 
 # **About the website** 
 
-## 🎯 **Section 1: Biological Inspiration**
+## **Section 1: Biological Inspiration**
 
 - **Visual simulation** of dogs finding food using their sense of smell
 - Shows scent gradient visualization (green glow around food)
 - Dogs exhibit realistic behaviors: following gradients, zigzagging when lost, cooperation
 - Real-time stats: number of dogs searching, average distance to food, dogs that found food
 
-## ⚙️ **Section 2: Algorithm Visualization**
+## **Section 2: Algorithm Visualization**
 
 - **Two tabs** for organizing parameters:
 
@@ -205,7 +211,7 @@ This is a well-designed hybrid algorithm combining:
   
 - **Real-time statistics**: iteration count, best fitness, evaluations, convergence rate
 
-## 🏔️ **Section 3: Rosenbrock Function Optimization**
+## **Section 3: Rosenbrock Function Optimization**
 
 - **3D colorful visualization** of the Rosenbrock function surface
 - Color-coded height map (red = high values, blue/green = low values)
