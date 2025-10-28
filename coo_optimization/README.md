@@ -8,14 +8,15 @@ A bio-inspired metaheuristic optimization algorithm that mimics the cooperative 
 
 ## Features
 
-- 🐕 Bio-inspired algorithm based on canine pack hunting
-- 🚀 Surrogate-assisted optimization for expensive functions
-- 🎯 Multi-pack architecture for diverse exploration
-- 📈 Adaptive population sizing
-- 🔧 Easy-to-use API
+- Bio-inspired algorithm based on canine pack hunting
+- Surrogate-assisted optimization for expensive functions
+- Multi-pack architecture for diverse exploration
+- Adaptive population sizing
+- Easy-to-use API
 
 ## Installation
 
 ```bash
 pip install coo-optimizer
 ```
+
