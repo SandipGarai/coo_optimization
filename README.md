@@ -107,22 +107,15 @@ Every $k_{exchange} = 6$ iterations:
 
 1. **Rank all pack-local bests:**
 
-$$
-   B = \{ (\mathbf{x}_{1}^{*}, f_{1}^{*}), (\mathbf{x}_{2}^{*}, f_{2}^{*}), \ldots, (\mathbf{x}_{k}^{*}, f_{k}^{*}) \}.
-
-$$
+$$B = \{ (\mathbf{x}_{1}^{*}, f_{1}^{*}), (\mathbf{x}_{2}^{*}, f_{2}^{*}), \ldots, (\mathbf{x}_{k}^{*}, f_{k}^{*}) \}.$$
 
 2. **Select top-3 elites:**
 
-$$
-   E = \{\mathbf{x}_{(1)}^{*},\; \mathbf{x}_{(2)}^{*},\; \mathbf{x}_{(3)}^{*}\}.
-$$
+$$E = \{\mathbf{x}_{(1)}^{*},\; \mathbf{x}_{(2)}^{*},\; \mathbf{x}_{(3)}^{*}\}.$$
 
 3. **Inject perturbed elites into each pack:**
 
-$$
-   \mathbf{x}_{worst} \leftarrow \mathbf{x}_{elite} + 0.01 \cdot \boldsymbol{\epsilon}
-$$
+$$\mathbf{x}_{worst} \leftarrow \mathbf{x}_{elite} + 0.01 \cdot \boldsymbol{\epsilon}$$
 
 **Practical Relevance:** This models **information sharing between packs** through vocalizations or visual cues. Weak-performing dogs are replaced with perturbed versions of successful strategies from other packs.
 
