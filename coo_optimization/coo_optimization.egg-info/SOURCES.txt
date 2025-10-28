@@ -1,0 +1,16 @@
+LICENSE.txt
+MANIFEST.in
+README.md
+pyproject.toml
+requirements.txt
+setup.cfg
+setup.py
+coo_optimization/__init__.py
+coo_optimization/coo.py
+coo_optimization.egg-info/PKG-INFO
+coo_optimization.egg-info/SOURCES.txt
+coo_optimization.egg-info/dependency_links.txt
+coo_optimization.egg-info/top_level.txt
+examples/demo_coo_optimization.py
+tests/__init__.py
+tests/test_coo.py
