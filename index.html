@@ -749,6 +749,10 @@
       let bioAnimationId = null;
       let bioDogs = [];
       let foodPos = { x: 750, y: 300 };
+      let bioIterationCount = 0;
+      let bioMaxIterations = 500;
+      let bioNoImprovementCount = 0;
+      let bioPreviousBestDist = Infinity;
 
       function initBioDogs() {
         bioDogs = [];
@@ -881,11 +885,36 @@
         updateBioDogs();
         drawBioDogs();
 
+        bioIterationCount++;
+
+        // Early stopping: check for convergence
+        const avgDist = parseFloat(
+          document.getElementById("bioAvgDist").textContent
+        );
+        if (Math.abs(avgDist - bioPreviousBestDist) < 1) {
+          bioNoImprovementCount++;
+        } else {
+          bioNoImprovementCount = 0;
+        }
+        bioPreviousBestDist = avgDist;
+
+        // Stop if all found OR max iterations reached OR no improvement for 50 iterations
         if (bioDogs.every((d) => d.found)) {
           setTimeout(() => {
             resetBioSimulation();
             startBioSimulation();
           }, 2000);
+        } else if (
+          bioIterationCount >= bioMaxIterations ||
+          bioNoImprovementCount >= 50
+        ) {
+          alert(
+            `Biological simulation stopped: ${
+              bioIterationCount >= bioMaxIterations
+                ? "Max iterations reached"
+                : "No improvement detected"
+            }. Try adjusting parameters.`
+          );
         } else {
           bioAnimationId = requestAnimationFrame(bioAnimationLoop);
         }
@@ -900,6 +929,9 @@
       function resetBioSimulation() {
         if (bioAnimationId) cancelAnimationFrame(bioAnimationId);
         initBioDogs();
+        bioIterationCount = 0;
+        bioNoImprovementCount = 0;
+        bioPreviousBestDist = Infinity;
         bioCtx.fillStyle = "#f9f9f9";
         bioCtx.fillRect(0, 0, bioCanvas.width, bioCanvas.height);
         drawScentGradient();
@@ -921,6 +953,8 @@
       let algoIteration = 0;
       let algoBestPos = null;
       let algoBestFitness = -Infinity;
+      let algoNoImprovementCount = 0;
+      let algoPreviousBestFitness = -Infinity;
       let algoParams = {
         nPacks: 2,
         packSize: 8,
@@ -1207,7 +1241,22 @@
         updateAlgoPacks();
         drawAlgoPacks();
 
-        if (algoIteration < algoParams.maxIter) {
+        // Early stopping: check for convergence
+        if (Math.abs(algoBestFitness - algoPreviousBestFitness) < 0.01) {
+          algoNoImprovementCount++;
+        } else {
+          algoNoImprovementCount = 0;
+        }
+        algoPreviousBestFitness = algoBestFitness;
+
+        // Stop if max iterations OR no improvement for 20 iterations
+        if (algoIteration >= algoParams.maxIter) {
+          alert(`Optimization complete after ${algoIteration} iterations.`);
+        } else if (algoNoImprovementCount >= 20) {
+          alert(
+            `Early stopping at iteration ${algoIteration}: No improvement for 20 iterations. Try adjusting hyperparameters.`
+          );
+        } else {
           algoAnimationId = setTimeout(
             () => requestAnimationFrame(algoAnimationLoop),
             50
@@ -1345,14 +1394,14 @@
 
         const x1 = x * cosA - y * sinA;
         const y1 = x * sinA + y * cosA;
-        const z1 = z;
+        const z1 = -z; // INVERTED: Negative z to flip the surface
 
         const x2 = x1;
         const y2 = y1 * cosE - z1 * sinE;
 
         const scale = 80;
         const offsetX = rosenCanvas.width / 2;
-        const offsetY = rosenCanvas.height / 2 + 100;
+        const offsetY = rosenCanvas.height / 2 - 50; // Adjusted offset
 
         return {
           x: offsetX + x2 * scale,
@@ -1580,7 +1629,38 @@
         updateRosenPacks();
         drawRosenPacks();
 
-        if (rosenIteration < algoParams.maxIter) {
+        // Early stopping: check for convergence
+        if (Math.abs(rosenBestVal - rosenPreviousBestVal) < 0.0001) {
+          rosenNoImprovementCount++;
+        } else {
+          rosenNoImprovementCount = 0;
+        }
+        rosenPreviousBestVal = rosenBestVal;
+
+        // Stop if converged to acceptable solution (< 0.01) OR max iterations OR no improvement
+        if (rosenBestVal < 0.01) {
+          alert(
+            `Success! Global minimum found at iteration ${rosenIteration}:\nPosition: (${rosenBestPos.x.toFixed(
+              4
+            )}, ${rosenBestPos.y.toFixed(4)})\nValue: ${rosenBestVal.toFixed(
+              6
+            )}`
+          );
+        } else if (rosenIteration >= algoParams.maxIter) {
+          alert(
+            `Max iterations (${
+              algoParams.maxIter
+            }) reached.\nBest value: ${rosenBestVal.toFixed(
+              6
+            )}\nConsider adjusting hyperparameters.`
+          );
+        } else if (rosenNoImprovementCount >= 15) {
+          alert(
+            `Early stopping at iteration ${rosenIteration}: No improvement for 15 iterations.\nBest value: ${rosenBestVal.toFixed(
+              6
+            )}\nTry fine-tuning hyperparameters.`
+          );
+        } else {
           rosenAnimationId = setTimeout(
             () => requestAnimationFrame(rosenAnimationLoop),
             100
@@ -1597,6 +1677,8 @@
       function resetRosenOptimization() {
         if (rosenAnimationId) clearTimeout(rosenAnimationId);
         initRosenPacks();
+        rosenNoImprovementCount = 0;
+        rosenPreviousBestVal = Infinity;
         drawRosenPacks();
         document.getElementById("rosenBestPos").textContent = "(0, 0)";
         document.getElementById("rosenBestVal").textContent = "∞";
