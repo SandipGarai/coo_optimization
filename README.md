@@ -94,7 +94,7 @@ $$\text{OlfMap}[c(x)] = \max(\text{OlfMap}[c(x)], f(x))$$
 The **olfactory attraction vector** for position $x$ is:
 
 $$\mathcal{O}(x) = \text{center}(c^*) - x, \quad
-c^* = \arg\max_{c' \in \text{neigh}(c(x))} \text{OlfMap}[c']$$
+c^* = \arg\max_{c' \in \text{neigh}(c(x))} \text{OlfMap}{[c']}$$
 
 which biases the agent toward the best neighboring scent region.
 
