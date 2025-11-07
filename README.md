@@ -53,9 +53,8 @@ At every iteration, the algorithm updates positions and velocities using biologi
 ### 3.1 Initialization
 
 Each pack $P_k$ has $n_k$ individuals with random positions:
-$$
-x_{i}^{(k)}(0) = L + r_i \cdot (U - L), \quad r_i \sim U(0,1)^d
-$$
+
+$$x_{i}^{(k)}(0) = L + r_i \cdot (U - L), \quad r_i \sim U(0,1)^d$$
 where $L, U$ are lower and upper bounds in $\mathbb{R}^d$.
 
 Velocities $v_i^{(k)}(0) = 0$.
@@ -63,17 +62,13 @@ Velocities $v_i^{(k)}(0) = 0$.
 ### 3.2 Movement Update Rule
 
 At iteration $t$, agent $i$ in pack $k$ moves according to:
-$$
-v_i^{(k)}(t+1) =
+$$v_i^{(k)}(t+1) =
 \alpha_t v_i^{(k)}(t)
 * \beta_t (x_{best}^{(k)} - x_i^{(k)}(t))
 * \gamma_t (x_{best}^{(global)} - x_i^{(k)}(t))
-* \delta \mathcal{O}(x_i^{(k)}(t))
-$$
+* \delta \mathcal{O}(x_i^{(k)}(t))$$
 
-$$
-x_i^{(k)}(t+1) = x_i^{(k)}(t) + v_i^{(k)}(t+1) + \eta_t
-$$
+$$x_i^{(k)}(t+1) = x_i^{(k)}(t) + v_i^{(k)}(t+1) + \eta_t$$
 where:
 
 | Symbol             | Meaning                                       |
@@ -86,33 +81,21 @@ where:
 | $\eta_t$           | Random Gaussian perturbation for exploration  |
 
 Coefficient adaptation follows exponential schedules:
-$$
-\alpha_t = 0.85 e^{-3t/T} + 0.25(1 - e^{-3t/T})
-$$
-$$
-\beta_t = 0.15 e^{-3t/T} + 0.6(1 - e^{-3t/T})
-$$
-$$
-\gamma_t = 0.3 e^{-3t/T} + 0.5(1 - e^{-3t/T})
-$$
+$$\alpha_t = 0.85 e^{-3t/T} + 0.25(1 - e^{-3t/T})$$
+$$\beta_t = 0.15 e^{-3t/T} + 0.6(1 - e^{-3t/T})$$
+$$\gamma_t = 0.3 e^{-3t/T} + 0.5(1 - e^{-3t/T})$$
 
 ### 3.3 Olfactory Map Update
 
 The **olfactory map** divides the search domain into $g^d$ cells.
 For each evaluated point $x$, identify its cell index:
-$$
-c(x) = \left\lfloor g \frac{x - L}{U - L} \right\rfloor
-$$
+$$c(x) = \left\lfloor g \frac{x - L}{U - L} \right\rfloor$$
 and store:
-$$
-\text{OlfMap}[c(x)] = \max(\text{OlfMap}[c(x)], f(x))
-$$
+$$\text{OlfMap}[c(x)] = \max(\text{OlfMap}[c(x)], f(x))$$
 
 The **olfactory attraction vector** for position $x$ is:
-$$
-\mathcal{O}(x) = \text{center}(c^*) - x, \quad
-c^* = \arg\max_{c' \in \text{neigh}(c(x))} \text{OlfMap}[c']
-$$
+$$\mathcal{O}(x) = \text{center}(c^*) - x, \quad
+c^* = \arg\max_{c' \in \text{neigh}(c(x))} \text{OlfMap}[c']$$
 which biases the agent toward the best neighboring scent region.
 
 ### 3.4 Surrogate-Assisted Evaluation
@@ -124,28 +107,20 @@ If relative uncertainty $\sigma(x)/|\mu(x)| < \tau$, the surrogate is trusted.
 Otherwise, the true function is evaluated.
 
 Surrogate activation uses **hysteresis thresholds**:
-$$
-\text{Activate if } R^2_{cv} \ge r_{act}, \quad
-\text{Deactivate if } R^2_{cv} < r_{deact}
-$$
+$$\text{Activate if } R^2_{cv} \ge r_{act}, \quad
+\text{Deactivate if } R^2_{cv} < r_{deact}$$
 to avoid oscillations between activation states.
 
 Blended surrogate–true evaluation:
-$$
-\hat{f}(x) = w(x)\mu(x) + (1-w(x))f(x), \quad
-w(x) = e^{-\left(\frac{\sigma(x)}{\tau |\mu(x)|}\right)^2}
-$$
+$$\hat{f}(x) = w(x)\mu(x) + (1-w(x))f(x), \quad
+w(x) = e^{-\left(\frac{\sigma(x)}{\tau |\mu(x)|}\right)^2}$$
 
 ### 3.5 Gradient Refinement
 
 For top-performing individuals, COO estimates numerical gradients:
-$$
-\nabla f(x)_j = \frac{f(x + \varepsilon e_j) - f(x - \varepsilon e_j)}{2\varepsilon}
-$$
+$$\nabla f(x)_j = \frac{f(x + \varepsilon e_j) - f(x - \varepsilon e_j)}{2\varepsilon}$$
 and performs a bounded improvement step:
-$$
-x' = \text{clip}(x + \eta_g \frac{\nabla f(x)}{|\nabla f(x)|})
-$$
+$$x' = \text{clip}(x + \eta_g \frac{\nabla f(x)}{|\nabla f(x)|})$$
 where $\eta_g$ decays linearly with iterations.
 
 This mimics a **canine sniffing refinement** — smaller, directed moves near the scent peak.
@@ -154,9 +129,7 @@ This mimics a **canine sniffing refinement** — smaller, directed moves near th
 
 If diversity $D_t = \frac{1}{d} \sum_j \sigma_j(x)$ drops below a threshold,
 top elites are injected into weaker packs:
-$$
-x_{worst}^{(k)} \leftarrow x_{elite} + \mathcal{N}(0, 0.01I)
-$$
+$$x_{worst}^{(k)} \leftarrow x_{elite} + \mathcal{N}(0, 0.01I)$$
 ensuring diversity and preventing premature convergence.
 
 ## 4. Convergence Analysis
@@ -196,9 +169,7 @@ Hence, COO converges almost surely to a local or global optimum under standard a
 | Olfactory map          | $O(g^d)$                      | $O(g^d)$                 | grid with few cells per dim |
 
 Overall:
-$$
-T_{COO} = O(T_{iter} \cdot P \cdot n \cdot d + M_{surrogate})
-$$
+$$T_{COO} = O(T_{iter} \cdot P \cdot n \cdot d + M_{surrogate})$$
 which is competitive with Particle Swarm Optimization (PSO) or Differential Evolution (DE), but with enhanced sample efficiency due to surrogate filtering.
 
 ## 6. Practical Relevance and Usefulness
